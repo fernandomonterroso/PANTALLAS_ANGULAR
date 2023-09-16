@@ -33,6 +33,7 @@ Una vez clonado este repositorio, debe instalar las dependencias.
 4. `ng serve`
    Ahora abres tu navegador y visita `http://localhost:4200/`.
    La aplicación se recargará automáticamente si cambia alguno de los archivos de origen.
+   generar una nueva pantalla ejecuta `ng generate module pages/pantalla --route pantalla --module app.module.ts`
 
 ## Build
 
