@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Configurar Equipo</h1>
+<div mat-dialog-content>
+    <div class="container">
+        <div class="row-3">
+          <h2>BÁSCULAS</h2>
+          <mat-form-field appearance="fill">
+            <mat-label>Selecione un elemento</mat-label>
+            <mat-select [(ngModel)]="data.bascula">
+                <mat-option *ngFor="let basc of basculaModel" [value]="basc">{{ basc.BAS_COD }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Configurar</button>
+  </div>

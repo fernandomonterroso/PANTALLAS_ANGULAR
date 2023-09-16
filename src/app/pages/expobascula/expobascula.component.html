@@ -1,0 +1,20 @@
+<form (ngSubmit)="aprobacion()">
+  <div class="body"></div>
+  <div class="container">
+    <div class="center">
+      <div class="row row-cols-7">
+    <div class="col"><img src="assets/imagenes/logo.png" alt="logo de COMBEX" ></div>
+    <div class="col">
+      <mat-form-field class="width" appearance="fill">
+        <mat-label>No.Gafete</mat-label>
+        <input type ="password" matInput placeholder="Ex. 00-00000" maxlength="8"  [(ngModel)]="gafete" onkeyup="javascript:this.value=this.value.toUpperCase();">
+      </mat-form-field>
+    <div>
+      <button type="submit">Ingresar</button>
+    </div>
+  </div>
+  </div>    
+    </div>
+</div>
+</form>
+

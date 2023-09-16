@@ -1,0 +1,264 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+  <div class="container-fluid">
+    <p id="name">{{array.NOMBRE}}</p>
+    <a class="navbar-brand scnd-font-color"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarScroll" aria-controls="navbarScroll"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarScroll">
+      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
+        style="--bs-scroll-height: 100px;">
+        <li>
+          <a class="header-menu-tab" href="javascript:location.reload()"><span
+              class="icon entypo-cw scnd-font-color"></span>Recargar Data</a>
+        </li>
+        <li>
+          <a class="header-menu-tab" href="expobascula/mainExpo"><span
+              class="icon entypo-back scnd-font-color"></span>Regresar</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<form (ngSubmit)="getFechas()">
+  <body>
+    <section>
+      <br>
+      <h1>Guias</h1>
+      <br>
+      <br>
+      <mat-grid-list cols="2" rowHeight="100px">
+        <mat-grid-tile>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Buscar # Guia ...</mat-label>
+            <input matInput [(ngModel)]="searchModel" name="searchModel">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field appearance="fill">
+            <mat-label>Ingresa el rango de fecha</mat-label>
+            <mat-date-range-input [formGroup]="range" [rangePicker]="picker"
+              disabled>
+              <input style="color: black;" matStartDate formControlName="start"
+                placeholder="Desde...">
+              <input style="color: black;" matEndDate formControlName="end"
+                placeholder="Hasta...">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker disabled="false"></mat-date-range-picker>
+          </mat-form-field>
+          <div class="btn-group btn-group-sm" role="group"
+            aria-label="Basic outlined example" style="margin-left: 50px;">
+            <button mat-raised-button color="primary" (click)="getFechas()">Aplicar
+              Filtro</button>
+            <button type="button" mat-raised-button color="warn"
+              (click)="removeFilter()">Cancelar</button>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <br>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th># GUIA</th>
+              <th>EMPRESA</th>
+              <th>PESO BRUTO</th>
+              <th>PESO NETO</th>
+              <th>FECHA INGRESO</th>
+              <th>HORA</th>
+              <th>PIEZAS</th>
+              <th>
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="guiasModel">
+            <!--<div class="loading" *ngIf="loading">
+            <img src="../../../assets/imagenes/loading.gif" alt="">
+          </div>-->
+            <tr *ngFor='let guias of guiasModel | filter:searchModel'>
+              <td>{{guias.GUIA}}</td>
+              <td>{{guias.EMPRESA}}</td>
+              <td>{{guias.PESO_BRUTO}} KG</td>
+              <td>{{guias.PESO_NETO}} KG</td>
+              <td>{{guias.FECHA_INI}}</td>
+              <td>{{horas}}</td>
+              <td>No. {{guias.PIEZAS}}</td>
+              <td>
+                <div class="btn-group btn-group-sm" role="group">
+                  <button type="button" mat-raised-button color="primary"
+                    data-bs-toggle="modal" data-bs-target="#pesarGuia"
+                    (click)="capturarKeys(guias.CORR, guias.ANIO, guias.BODEGA, guias.CIA, guias.GUIA)">Pesar</button>
+                  <button type="button" mat-raised-button color="primary"
+                    data-bs-toggle="modal" data-bs-target="#guiasHistorial"
+                    (click)="capturarKeysHistory(guias.CORR, guias.ANIO, guias.BODEGA, guias.CIA, guias.GUIA)">Consultar</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br>
+    </section>
+  </body>
+</form>
+
+<!-- MODLAS -->
+<!-- <div class="modal fade modal-dialog modal-dialog-scrollable" id="guiasHistorial" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="staticBackdropLabel">Historial Guia</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        <div class="modal-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col" style="color: black"># Guia</th>
+                <th scope="col" style="color: black">Peso Bruto</th>
+                <th scope="col" style="color: black">Bascula</th>
+                <th scope="col" style="color: black">Cuarto frio</th>
+                <th scope="col" style="color: black">Piezas</th>
+                <th scope="col" style="color: black">Fecha</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let hist of historyModel" style="color: black">
+                <th scope="row" style="color: black">{{noGuia}}</th>
+                <td style="color: black">{{hist.PESO_PESOBRUTOKG}} KG</td>
+                <td style="color: black">{{hist.BAS_COD}}</td>
+                <td style="color: black" >{{hist.PESO_CFRIO}}</td>
+                <td style="color: black" >{{hist.PESO_CANTPIEZA}}</td>
+                <td style="color: black">{{ hist.PESO_FECHOR | date:'dd/MM/yyyy hh:mm:ss a':'UTC' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <!--<button type="submit" class="btn btn-primary" routerLink='/expobascula/guias_hijas'>Guias Hijas</button>
+        </div>
+        </div>
+      </div>
+  </div> -->
+
+<div class="modal fade bd-example-modal-lg" id="guiasHistorial" tabindex="-1"
+  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="staticBackdropLabel">Historial Guía</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th scope="col" style="color: black">Totales:</th>
+            <th scope="col" style="color: black"></th>
+            <th scope="col" style="color: black"></th>
+            <th scope="col" style="color: black">{{ totalPiezas }}</th>
+            <th scope="col" style="color: black">{{ totalTara | number:'1.2-2' }} Kg</th>
+            <th scope="col" style="color: black"></th>
+            <th scope="col" style="color: black">{{ totalPesoBruto | number:'1.2-2' }} Kg</th>
+            <th scope="col" style="color: black">{{ totalPesoNeto | number:'1.2-2' }} Kg</th>
+            <th scope="col" style="color: black"></th>
+          </tr>
+        </thead>
+          <thead>
+            <tr>
+              <th scope="col" style="color: black">BASE</th>
+              <th scope="col" style="color: black">NO. EQUIPO</th>
+              <th scope="col" style="color: black">CUARTO FRIO</th>
+              <th scope="col" style="color: black">PIEZAS</th>
+              <th scope="col" style="color: black">TARA KG</th>
+              <th scope="col" style="color: black">BASCULA</th>
+              <th scope="col" style="color: black">PESO BRUTO</th>
+              <th scope="col" style="color: black">PESO NETO</th>
+              <th scope="col" style="color: black">FECHA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let hist of historyModel" style="color: black">
+              <td style="color: black">{{hist.TBASE_DESC}}</td>
+              <td style="color: black">{{hist.PESO_NUMEQUIPO}}</td>
+              <td style="color: black">{{hist.PESO_CFRIO}}</td>
+              <td style="color: black">{{hist.PESO_CANTPIEZA}}</td>
+              <td style="color: black">{{hist.PESO_TARAMANKG | number:'1.2-2' }}
+                Kg</td>
+              <td style="color: black">{{hist.BAS_COD}}</td>
+              <td style="color: black">{{hist.PESO_PESOBRUTOKG | number:'1.2-2'
+                }} Kg</td>
+              <td style="color: black">{{hist.PESO_PESOBRUTOKG-hist.PESO_TARAMANKG
+                | number:'1.2-2' }} Kg</td>
+              <td style="color: black">{{ hist.PESO_FECHOR | date:'dd/MM/yyyy hh:mm:ss a'
+                }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <!--<button type="submit" class="btn btn-primary" routerLink='/expobascula/guias_hijas'>Guias Hijas</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="pesarGuia" data-bs-backdrop="static"
+  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="staticBackdropLabel">Pesar Guia</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <mat-grid-list cols="2" rowHeight="100px">
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>Equipo</mat-label>
+              <mat-select [(ngModel)]="equipoSelc"
+                (selectionChange)="capturarEquipo()" id="equiposList">
+                <mat-option *ngFor="let equipo of equiposModel" [value]="equipo">{{equipo.TBASE_COD}}
+                  - {{equipo.TARA_CODEQUIPO}} - {{equipo.TARA_PESOKG | number:'1.2-2' }} KG</mat-option>
+                <mat-option value="equipoNulo">
+                  <b>Sin Equipo</b> 
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>No. Guia</mat-label>
+              <input type="text" matInput [value]="noGuia" disabled>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>No. Piezas</mat-label>
+              <input type="number" matInput name="piezas" #piezas="ngModel"
+                [(ngModel)]="numPiezas">
+            </mat-form-field>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+          (click)="cancelSelect()">Cerrar</button>
+        <button type="submit" class="btn btn-success" data-bs-dismiss="modal"
+          (click)="pesarCarga()">Pesar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SPINNER -->

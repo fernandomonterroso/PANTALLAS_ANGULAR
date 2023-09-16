@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <div class="container-fluid">
+      <div class="profile-menu">
+        <p><a><span class="scnd-font-color"></span></a></p>
+    </div>
+    <p id="name">{{array.NOMBRE}}</p>
+      <a class="navbar-brand scnd-font-color"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+      </button>
+      <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+        </ul>
+      </div>
+      <div class="form-inline my-2 my-lg-0">
+        <li class="nav-item active">
+          <a href="/expobascula/" (click)="cerrarSesion()" id="name">
+            <img src="../../../assets/imagenes/cerrar-sesion.png" width="45" height="45" class="d-inline-block align-top" alt="">
+          </a>
+        </li>
+      </div>
+    </div>
+  </nav>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 col-xs-12 mt-5 mb-5" >
+          <a class="mainMenu" href="expobascula/equipos"><img mat-card-image src="../../../assets/imagenes/trolley.png" style="width:225px"><br><mat-card-title align="center">Peso Equipo/Tara</mat-card-title></a>
+        </div>
+        <div class="col-md-4 col-xs-12 mt-5 mb-5">
+          <a class="mainMenu" href="expobascula/bascula"><img mat-card-image src="../../../assets/imagenes/shelving.png" style="width:225px"><br><mat-card-title align="center">Peso Guías</mat-card-title></a>
+        </div>
+        <div class="col-md-4 col-xs-12 mt-5 mb-5">
+          <a class="mainMenu" href="https://www.combexim.com.gt/consultas/guias_expo.php" target="_blank"><img mat-card-image src="../../../assets/imagenes/tablet.png" style="width:225px"><br><mat-card-title align="center">Modificación de pase</mat-card-title></a>
+        </div>
+      </div>
+    </div>
+  </body>

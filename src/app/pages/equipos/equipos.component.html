@@ -1,0 +1,197 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <div class="container-fluid">
+        <div class="profile-menu">
+            <p><a><span class="scnd-font-color"></span></a></p>
+        </div>
+        <p id="name">{{array.NOMBRE}}</p>
+      <a class="navbar-brand scnd-font-color"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+          <li>
+            <a class="header-menu-tab" href="javascript:location.reload()"><span class="icon entypo-cw scnd-font-color"></span>Recargar Data</a>
+          </li>
+          <li>
+            <a class="header-menu-tab" href="expobascula/mainExpo"><span class="icon entypo-back scnd-font-color"></span>Regresar</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</nav>
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#insertModal" style="float: right;"><span class="icon entypo-plus-circled" style="padding-right: 10;"></span> AGREGAR</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Tipo</th>
+        <th scope="col">Empresa Encargada</th>
+        <th scope="col">Equipo</th>
+        <th scope="col">Báscula</th>
+        <th scope="col">Peso</th>
+        <th scope="col">Hora</th>
+        <th scope="col" *ngIf="linagen == 'F001537'">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let equip of equiposModel">
+        <td>{{equip.TBASE_COD}}</td>
+        <td>{{equip.LINAGEN_NOM}}</td>
+        <td>{{equip.TARA_CODEQUIPO}}</td>
+        <td>{{equip.BAS_COD}}</td>
+        <td>{{equip.TARA_PESOKG | number:'1.2-2' }} KG</td>
+        <td>{{equip.TARA_FECH}}</td>
+        <td *ngIf="linagen == 'F001537'">
+          <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+            <button type="button" (click)="getTaraCorr(equip.TARA_CORR)" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" >Eliminar</button>
+            <button type="button" (click)="editTaraCorr(equip.TARA_CORR, equip.TBASE_COD, equip.TARA_CODEQUIPO, equip.TARA_PESOKG, equip.BAS_COD)" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal" >Editar</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+<!-- MODALS -->
+
+<div class="modal fade" id="prueba" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade modal-xl" id="insertModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Equipo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="display: flex; justify-content: center; align-items: center;">
+        <form action="">
+          <div class="switch-field">
+            <div class="container">
+              <div class="row-3">
+                <h2>TARAS</h2>
+              </div>
+              <mat-form-field appearance = "fill">
+                <mat-label style="width: bold;">Tipo de tara</mat-label>
+                <mat-select [(ngModel)]="selc" (selectionChange)="capturarTaraIns()">
+                  <mat-option *ngFor="let tar of taraModel" [value]="tar" >{{tar.TBASE_DESC}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="container">
+              <div class="row-3">
+                <h2>NO. EQUIPO</h2>
+                <mat-form-field appearance="fill">
+                  <input type="text" onkeyup="this.value = this.value.toUpperCase();" matInput [(ngModel)]="numEquip">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cancelSelect()" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="selectTable()" data-bs-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Equipo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h2>Estas seguro de querer eliminar el equipo?</h2>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="deleteEquipo()" data-bs-dismiss="modal">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar Equipo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <form>
+            <div class="row">
+            <div class="col">
+              <h2>TIPO</h2>
+              <mat-form-field appearance = "fill" >
+                <mat-label style="width: bold;">Tipo de tara</mat-label>
+                <mat-select [(ngModel)]="taraselc" (selectionChange)="capturarTaraUpd()" >
+                  <mat-option *ngFor="let tar of taraModel"  [value]="tar">{{tar.TBASE_COD}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <h2>NO. EQUIPO</h2>
+                <mat-form-field appearance="fill">
+                  <input type="text" matInput id="equipo" name="equipo" #equipo="ngModel" [(ngModel)]="edit.equipo">
+                </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <h2>PESO</h2>
+                <mat-form-field appearance="fill">
+                  <input type="text" matInput id="peso" name="peso" #peso="ngModel" [(ngModel)]="edit.peso" disabled>
+                </mat-form-field>
+                <br>
+                <button type="button" class="btn btn-warning" (click)="editarPeso()">Obtener peso</button>
+            </div>
+            <!-- <div class="col" *ngIf="optEdit">
+              <h2>BASCULA</h2>
+              <mat-form-field appearance="fill">
+                <mat-label>Bascula #</mat-label>
+                <mat-select [(ngModel)]="modelbascedit" (selectionChange)="capturarEndUpd()" disabled="false">
+                  <mat-option *ngFor="let op of basculaModel" [value]="op">{{op.BAS_COD}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div> -->
+          </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cancelar()" data-bs-dismiss="modal" >Cancelar</button>
+        <button type="button" class="btn btn-warning" (click)="updateEquipo()" data-bs-dismiss="modal">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>

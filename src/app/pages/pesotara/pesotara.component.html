@@ -1,0 +1,58 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <div class="container-fluid">>
+      <a class="navbar-brand scnd-font-color"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+          <li>
+            <a class="header-menu-tab" href="expobascula/bascula"><span class="icon entypo-back scnd-font-color"></span>Regresar</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <br>
+
+  <form action="">
+    <div class="switch-field">
+      <div class="container">
+        <div class="row-3">
+          <h2>TARAS</h2>
+        </div>
+        <mat-form-field appearance = "fill">
+          <mat-label style="width: bold;">Tipo de tara</mat-label>
+          <mat-select [(ngModel)]="taraModel" (selectionChange)="capturarTara()">
+            <mat-option *ngFor="let tar of tarasModel" [value]="tar">{{tar.TBASE_DESC}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--<div class="dropdown">
+          <select name="one" class="dropdown-select" >
+            <option>Select…</option>
+            <option *ngFor="let tar of tarasModel">{{tar.TBASE_DESC}}</option>
+          </select>
+        </div>-->
+        <br>
+        <div class="row-3">
+          <h2>BASCULAS</h2>
+        </div>
+        <mat-form-field appearance="fill">
+          <mat-label>Bascula #</mat-label>
+          <mat-select [(ngModel)]="bascSelec" (selectionChange)="capturarEnd()">
+            <mat-option *ngFor="let op of basculaModel" [value]="op">{{op.BAS_COD}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--<div class="dropdown">
+          <select name="one" class="dropdown-select" >
+            <option>Select…</option>
+            <option *ngFor="let op of basculaModel">{{op.BAS_COD}}</option>
+          </select>
+        </div>-->
+        <br>
+        <div class="hola">
+          <button type="button" class="btn btn-success" (click)="configuracion()">Hecho</button>
+        </div>
+      </div>
+    </div>
+  </form>
